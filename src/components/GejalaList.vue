@@ -17,6 +17,7 @@
         <v-list-tile-action>
           <v-checkbox
             v-model="item.selected"
+            @change="onSelectionChange"
             color="red darken-2"
           />
         </v-list-tile-action>
@@ -54,6 +55,9 @@ export default {
           console.log(err)
           this.state = 'error'
         })
+    },
+    onSelectionChange (ev) {
+      this.$emit('selection-change', this.items.filter(it => it.selected).map(it => it.id))
     }
   },
   mounted () {
