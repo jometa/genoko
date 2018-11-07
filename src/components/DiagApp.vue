@@ -11,7 +11,7 @@
     >
       <gejala-list @selection-change="onSelectionChange"/>
     </v-navigation-drawer>
-    <diagnose :gejala-ids="gejalaIds"/>
+    <diagnose :gejala-ids="gejalaIds" :state="state"/>
   </div>
 </template>
 
@@ -41,6 +41,7 @@ export default {
     },
     diagnose (gejalaIds) {
       if (gejalaIds.length === 0) {
+        this.state = 'idle'
         return
       }
       this.state = 'loading'
