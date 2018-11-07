@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar>
+    <v-toolbar color="white">
       <v-text-field
         color="pink"
         height="24px"
@@ -21,7 +21,7 @@
           />
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-sub-title v-text="item.name"></v-list-tile-sub-title>
+          <v-list-tile-sub-title v-bind:class="{ 'font-weight-bold': item.selected }" v-text="item.name"></v-list-tile-sub-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
