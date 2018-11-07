@@ -9,6 +9,15 @@
       fixed
       app
     >
+      <v-toolbar flat>
+        <v-text-field
+          solo
+          color="blue"
+          height="24px"
+          flat
+        >
+        </v-text-field>
+      </v-toolbar>
       <v-list>
         <v-list-tile
           value="true"
@@ -27,30 +36,19 @@
     <v-toolbar
       app
       flat
-      color="white"
       class="elevation-1"
-      clipped-left
     >
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>menu</v-icon>
-      </v-btn>
       <v-toolbar-items>
-        <v-btn flat>
-
+        <v-btn small flat ripple>
+          App
+        </v-btn>
+        <v-btn small flat>
+          Rekam Medik
         </v-btn>
       </v-toolbar-items>
+      <v-spacer></v-spacer>
+      <v-btn color="primary">Save</v-btn>
+      <v-toolbar-title v-text="title"></v-toolbar-title>
     </v-toolbar>
     <v-content>
       <router-view/>
