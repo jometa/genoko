@@ -8,13 +8,13 @@
       enable-resize-watcher
       fixed
       app
+      width="400"
     >
-      <v-toolbar flat>
+      <v-toolbar>
         <v-text-field
-          solo
-          color="blue"
+          color="pink"
           height="24px"
-          flat
+          placeholder="Keyword gejala"
         >
         </v-text-field>
       </v-toolbar>
