@@ -5,6 +5,7 @@
         color="pink"
         height="24px"
         placeholder="Keyword gejala"
+        v-model="keyword"
       >
       </v-text-field>
       <v-btn flat color="red" small @click="onSelectionClear">
@@ -14,7 +15,7 @@
     <v-list three-line>
       <v-list-tile
         value="true"
-        v-for="(item, i) in items"
+        v-for="(item, i) in filtered"
         :key="i"
       >
         <v-list-tile-action>
@@ -40,7 +41,13 @@ export default {
   data () {
     return {
       state: 'idle',
-      items: []
+      items: [],
+      keyword: ''
+    }
+  },
+  computed: {
+    filtered () {
+      return this.items.filter(it => it.name.includes(this.keyword))
     }
   },
   methods: {
