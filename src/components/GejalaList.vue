@@ -7,6 +7,9 @@
         placeholder="Keyword gejala"
       >
       </v-text-field>
+      <v-btn flat color="red" small @click="onSelectionClear">
+        Clear
+      </v-btn>
     </v-toolbar>
     <v-list three-line>
       <v-list-tile
@@ -58,6 +61,13 @@ export default {
     },
     onSelectionChange (ev) {
       this.$emit('selection-change', this.items.filter(it => it.selected).map(it => it.id))
+    },
+    onSelectionClear (ev) {
+      this.items.forEach(it => {
+        it.selected = false
+      })
+      // Emit change selection with empty result
+      this.$emit('selection-change', [])
     }
   },
   mounted () {
