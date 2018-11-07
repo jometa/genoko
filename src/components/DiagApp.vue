@@ -18,6 +18,7 @@
 <script>
 import GejalaList from '@/components/GejalaList'
 import Diagnose from '@/components/Diagnose'
+import Services from '@/services'
 
 export default {
   components: {
@@ -29,12 +30,29 @@ export default {
       gejalaIds: [],
       miniVariant: false,
       clipped: true,
-      drawer: true
+      drawer: true,
+      state: 'idle'
     }
   },
   methods: {
     onSelectionChange (gejalaIds) {
       this.gejalaIds = gejalaIds
+      this.diagnose(gejalaIds)
+    },
+    diagnose (gejalaIds) {
+      if (gejalaIds.length === 0) {
+        return
+      }
+      this.state = 'loading'
+      Services.diagnose(gejalaIds)
+        .then(result => {
+          console.log(result)
+          this.state = 'success'
+        })
+        .catch(err => {
+          console.log(err)
+          this.state = 'error'
+        })
     }
   }
 }

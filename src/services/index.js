@@ -1,8 +1,14 @@
-import { Axios } from './base'
+import { Rest, Expert } from './base'
 
 export default {
   getGejala () {
-    return Axios.get('gejala')
+    return Rest.get('gejala')
       .then(resp => resp.data._embedded.gejala)
+  },
+  diagnose (gejalaIds) {
+    return Expert.post('diagnose', {
+      gejala: gejalaIds
+    })
+      .then(resp => resp.data)
   }
 }
