@@ -20,8 +20,8 @@
       >
         <v-list-tile-action>
           <v-checkbox
-            v-model="item.selected"
-            @change="onSelectionChange"
+            v-bind:value="item.selected"
+            @change="onSelectionChange(item.id, item.selected)"
             color="red darken-2"
           />
         </v-list-tile-action>
@@ -34,14 +34,11 @@
 </template>
 
 <script>
-import Services from '@/services'
-
 export default {
   name: 'GejalaList',
+  props: ['items', 'state'],
   data () {
     return {
-      state: 'idle',
-      items: [],
       keyword: ''
     }
   },
@@ -51,34 +48,12 @@ export default {
     }
   },
   methods: {
-    reload () {
-      this.state = 'loading'
-      Services.getGejala()
-        .then(items => {
-          this.items = items.map(it => {
-            it.selected = false
-            return it
-          })
-          this.state = 'idle'
-        })
-        .catch(err => {
-          console.log(err)
-          this.state = 'error'
-        })
-    },
-    onSelectionChange (ev) {
-      this.$emit('selection-change', this.items.filter(it => it.selected).map(it => it.id))
+    onSelectionChange (id, val) {
+      this.$emit('selection-change', {id, val})
     },
     onSelectionClear (ev) {
-      this.items.forEach(it => {
-        it.selected = false
-      })
-      // Emit change selection with empty result
-      this.$emit('selection-change', [])
+      this.$emit('selection-clear')
     }
-  },
-  mounted () {
-    this.reload()
   }
 }
 </script>

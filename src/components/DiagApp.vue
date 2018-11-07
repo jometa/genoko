@@ -9,9 +9,40 @@
       app
       width="400"
     >
-      <gejala-list @selection-change="onSelectionChange"/>
+      <v-toolbar color="white">
+        <v-text-field
+          color="pink"
+          height="24px"
+          placeholder="Keyword gejala"
+          v-model="keyword"
+        >
+        </v-text-field>
+        <v-btn flat color="red" small @click="onSelectionClear">
+          Clear
+        </v-btn>
+      </v-toolbar>
+      <v-list three-line>
+        <v-list-tile
+          value="true"
+          v-for="(item, i) in filteredGejala"
+          :key="i"
+        >
+          <v-list-tile-action>
+            <v-checkbox
+              v-bind:value="item.selected"
+              @change="onSelectionChange(item.id, !item.selected)"
+              color="red darken-2"
+            />
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-sub-title v-bind:class="{ 'font-weight-bold': item.selected }" v-text="item.name"></v-list-tile-sub-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
     </v-navigation-drawer>
-    <diagnose :gejala-ids="gejalaIds" :state="state"/>
+    <diagnose 
+      :gejala-ids="selectedGejala"
+      :state="states.diagnose"/>
   </div>
 </template>
 
@@ -31,30 +62,71 @@ export default {
       miniVariant: false,
       clipped: true,
       drawer: true,
-      state: 'idle'
+      states: {
+        gejala: 'idle',
+        diagnose: 'idle'
+      },
+      keyword: ''
     }
   },
   methods: {
-    onSelectionChange (gejalaIds) {
-      this.gejalaIds = gejalaIds
-      this.diagnose(gejalaIds)
+    onSelectionChange (id, val) {
+      let items = this.gejalaIds
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].id === id) {
+          items[i].selected = val
+          break
+        }
+      }
+      this.diagnose(this.selectedGejala)
     },
     diagnose (gejalaIds) {
       if (gejalaIds.length === 0) {
-        this.state = 'idle'
+        this.states.diagnose = 'idle'
         return
       }
-      this.state = 'loading'
+      this.states.diagnose = 'loading'
       Services.diagnose(gejalaIds)
         .then(result => {
           console.log(result)
-          this.state = 'success'
+          this.states.diagnose = 'success'
         })
         .catch(err => {
           console.log(err)
-          this.state = 'error'
+          this.states.diagnose = 'error'
         })
+    },
+    reload () {
+      this.states.gejala = 'loading'
+      Services.getGejala()
+        .then(items => {
+          this.gejalaIds = items.map(it => {
+            it.selected = false
+            return it
+          })
+          this.states.gejala = 'idle'
+        })
+        .catch(err => {
+          console.log(err)
+          this.states.gejala = 'error'
+        })
+    },
+    onSelectionClear () {
+      this.gejalaIds.forEach(it => {
+        it.selected = false
+      })
     }
+  },
+  computed: {
+    selectedGejala () {
+      return this.gejalaIds.filter(it => it.selected).map(it => it.id)
+    },
+    filteredGejala () {
+      return this.gejalaIds.filter(it => it.name.includes(this.keyword))
+    }
+  },
+  mounted () {
+    this.reload()
   }
 }
 </script>
