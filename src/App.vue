@@ -1,17 +1,5 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      v-model="drawer"
-      enable-resize-watcher
-      fixed
-      app
-      width="400"
-    >
-      <gejala-list/>
-    </v-navigation-drawer>
     <v-toolbar
       app
       flat
@@ -48,18 +36,15 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2017</span>
-    </v-footer>
   </v-app>
 </template>
 
 <script>
-import GejalaList from '@/components/GejalaList'
+import DiagApp from '@/components/DiagApp'
 
 export default {
   components: {
-    GejalaList
+    DiagApp
   },
   data () {
     return {
